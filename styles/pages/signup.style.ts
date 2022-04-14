@@ -3,14 +3,15 @@ import styled from "@emotion/styled";
 import { Card } from "@mui/material";
 
 export const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
+  height: 97vh;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 export const MyCard = styled(Card)`
+  width: 400px;
+  max-width: 400px;
   padding: 3rem;
   display: flex;
   flex-direction: column;
