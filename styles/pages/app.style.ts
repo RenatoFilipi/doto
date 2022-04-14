@@ -11,5 +11,5 @@ export const Container = styled.div`
 `;
 
 export const MyP = styled.p`
-  font: 400 16px Inter;
+  font: 400 16px Nunito;
 `;

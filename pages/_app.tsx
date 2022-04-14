@@ -8,7 +8,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 const theme = createTheme({
   typography: {
     allVariants: {
-      fontFamily: "Inter",
+      fontFamily: "Nunito",
       textTransform: "none",
       fontSize: 16,
     },

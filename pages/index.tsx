@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Container } from "../styles/pages/index.style";
 import { Button } from "@mui/material";
 import { supabase } from "../utils/supabaseClient";
-import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { user } = await supabase.auth.api.getUserByCookie(req);
@@ -16,15 +15,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 const Home: NextPage = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    const user = supabase.auth.user();
-    if (user) {
-      router.push("/app");
-    }
-  }, [router]);
-
   return (
     <>
       <Head>
