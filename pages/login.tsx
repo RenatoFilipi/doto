@@ -25,7 +25,7 @@ const Login: NextPage = () => {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
-  const [password, setPassoword] = useState("");
+  const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -86,6 +86,7 @@ const Login: NextPage = () => {
     } catch (error) {
       if (error instanceof Error) {
         setError({ isError: true, message: error.message });
+        setPassword("");
       }
     }
   };
@@ -115,7 +116,7 @@ const Login: NextPage = () => {
               label="Password"
               variant="outlined"
               value={password}
-              onChange={(e) => setPassoword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <Button
               variant="contained"
