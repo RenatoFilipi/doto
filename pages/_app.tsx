@@ -1,9 +1,11 @@
-import { useEffect } from "react";
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { supabase } from "../utils/supabaseClient";
+
 import { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+import type { AppProps } from "next/app";
+import { supabase } from "../utils/supabaseClient";
+import { useEffect } from "react";
 
 const theme = createTheme({
   typography: {

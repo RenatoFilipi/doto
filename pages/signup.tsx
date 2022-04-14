@@ -1,11 +1,17 @@
-import { useState } from "react";
-import Head from "next/head";
-import type { NextPage, GetServerSideProps } from "next";
+import { Button, IconButton, Snackbar, TextField } from "@mui/material";
 import { Container, MyCard } from "../styles/pages/signup.style";
-import { Button, TextField, Snackbar, IconButton } from "@mui/material";
+import type { GetServerSideProps, NextPage } from "next";
+
+import CloseIcon from "@mui/icons-material/Close";
+import Head from "next/head";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
+
+interface ErrorProps {
+  isError: boolean;
+  message: string;
+}
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { user } = await supabase.auth.api.getUserByCookie(req);
@@ -14,11 +20,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
   return { props: {} };
 };
-
-interface ErrorProps {
-  isError: boolean;
-  message: string;
-}
 
 const SignUp: NextPage = () => {
   const router = useRouter();
@@ -128,7 +129,7 @@ const SignUp: NextPage = () => {
           </MyCard>
         </form>
         <Snackbar
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           open={open}
           autoHideDuration={6000}
           onClose={handleClose}

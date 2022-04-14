@@ -1,8 +1,9 @@
-import type { NextPage, GetServerSideProps } from "next";
+import type { GetServerSideProps, NextPage } from "next";
+
+import { Button } from "@mui/material";
+import { Container } from "../styles/pages/index.style";
 import Head from "next/head";
 import Link from "next/link";
-import { Container } from "../styles/pages/index.style";
-import { Button } from "@mui/material";
 import { supabase } from "../utils/supabaseClient";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {

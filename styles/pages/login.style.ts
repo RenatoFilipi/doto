@@ -1,6 +1,5 @@
-import styled from "@emotion/styled";
-
 import { Card } from "@mui/material";
+import styled from "@emotion/styled";
 
 export const Container = styled.div`
   height: 97vh;
@@ -10,6 +9,8 @@ export const Container = styled.div`
 `;
 
 export const MyCard = styled(Card)`
+  width: 400px;
+  max-width: 400px;
   padding: 3rem;
   display: flex;
   flex-direction: column;

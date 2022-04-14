@@ -1,6 +1,5 @@
-import styled from "@emotion/styled";
-
 import { Card } from "@mui/material";
+import styled from "@emotion/styled";
 
 export const Container = styled.div`
   height: 97vh;

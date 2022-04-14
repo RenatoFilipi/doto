@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+
 import { supabase } from "../../utils/supabaseClient";
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {

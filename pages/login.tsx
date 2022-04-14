@@ -1,10 +1,17 @@
-import { useState } from "react";
-import type { NextPage, GetServerSideProps } from "next";
-import Head from "next/head";
+import { Button, IconButton, Snackbar, TextField } from "@mui/material";
 import { Container, MyCard } from "../styles/pages/login.style";
-import { Button, TextField } from "@mui/material";
+import type { GetServerSideProps, NextPage } from "next";
+
+import CloseIcon from "@mui/icons-material/Close";
+import Head from "next/head";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
+import { useState } from "react";
+
+interface ErrorProps {
+  isError: boolean;
+  message: string;
+}
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { user } = await supabase.auth.api.getUserByCookie(req);
@@ -19,27 +26,67 @@ const Login: NextPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassoword] = useState("");
+  const [open, setOpen] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState<ErrorProps>({
+    isError: false,
+    message: "",
+  });
 
-  const SupabaseSignIn = async () => {
-    if (email.trim() === "" || password.trim() === "") {
-      alert("information not provided");
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
       return;
     }
 
-    setLoading(true);
-    const { user, session, error } = await supabase.auth.signIn({
-      email: email,
-      password: password,
-    });
+    setOpen(false);
+  };
 
-    setLoading(false);
+  const action = (
+    <>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
 
-    if (user) {
-      router.push("/app");
+  const SupabaseSignIn = async () => {
+    try {
+      if (email.trim() === "" || password.trim() === "") {
+        setOpen(true);
+        throw new Error("Information not provided");
+      }
+
+      setIsLoading(true);
+      const { user, session, error } = await supabase.auth.signIn({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        setIsLoading(false);
+        setOpen(true);
+        throw new Error(error.message);
+      }
+
+      if (user) {
+        setIsLoading(false);
+        setIsSuccess(true);
+        router.push("/app");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError({ isError: true, message: error.message });
+      }
     }
   };
 
@@ -50,32 +97,44 @@ const Login: NextPage = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Container>
-        <MyCard>
-          <TextField
-            type="text"
-            id="email"
-            label="Email"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            type="password"
-            id="password"
-            label="Password"
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassoword(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            disableElevation
-            onClick={SupabaseSignIn}
-          >
-            {loading ? "Loading..." : "Login"}
-          </Button>
-        </MyCard>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <MyCard>
+            <TextField
+              fullWidth
+              type="email"
+              id="email"
+              label="Email"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              type="password"
+              id="password"
+              label="Password"
+              variant="outlined"
+              value={password}
+              onChange={(e) => setPassoword(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color={isSuccess ? "success" : "primary"}
+              disableElevation
+              onClick={SupabaseSignIn}
+            >
+              {isLoading ? "Loading..." : isSuccess ? "Success" : "Login"}
+            </Button>
+          </MyCard>
+        </form>
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message={error.message}
+          action={action}
+        />
       </Container>
     </>
   );
