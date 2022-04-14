@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Head from "next/head";
-import type { NextPage } from "next";
+import type { NextPage, GetServerSideProps } from "next";
 import { Container, MyCard } from "../styles/pages/signup.style";
 import { Button, TextField } from "@mui/material";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 
-const user = supabase.auth.user();
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { user } = await supabase.auth.api.getUserByCookie(req);
+  if (user) {
+    return { props: {}, redirect: { destination: "/app" } };
+  }
+  return { props: {} };
+};
 
 const SignUp: NextPage = () => {
   const router = useRouter();
@@ -29,18 +35,12 @@ const SignUp: NextPage = () => {
       password: password,
     });
 
-    user ? router.push("/app") : null;
-
-    console.log(user);
-    console.log(session);
-    console.log(error);
-
     setLoading(false);
-  };
 
-  useEffect(() => {
-    user ? router.push("/app") : null;
-  }, [router]);
+    if (user) {
+      router.push("/app");
+    }
+  };
 
   return (
     <>

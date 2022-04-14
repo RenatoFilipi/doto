@@ -1,26 +1,28 @@
-import { useState, useEffect } from "react";
-import type { NextPage } from "next";
+import { useEffect } from "react";
+import type { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Container } from "../styles/pages/index.style";
 import { Button } from "@mui/material";
-import GitHubIcon from "@mui/icons-material/GitHub";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 
-const user = supabase.auth.user();
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { user } = await supabase.auth.api.getUserByCookie(req);
+  if (user) {
+    return { props: {}, redirect: { destination: "/app" } };
+  }
+  return { props: {} };
+};
 
 const Home: NextPage = () => {
   const router = useRouter();
 
-  const signInWithGitHub = async () => {
-    const { user, session, error } = await supabase.auth.signIn({
-      provider: "github",
-    });
-  };
-
   useEffect(() => {
-    user ? router.push("/app") : null;
+    const user = supabase.auth.user();
+    if (user) {
+      router.push("/app");
+    }
   }, [router]);
 
   return (
@@ -40,15 +42,6 @@ const Home: NextPage = () => {
             Sign up
           </Button>
         </Link>
-        {/* <Button
-          style={{ backgroundColor: "#333" }}
-          variant="contained"
-          disableElevation
-          startIcon={<GitHubIcon />}
-          onClick={signInWithGitHub}
-        >
-          Sign in with GitHub
-        </Button> */}
       </Container>
     </>
   );
