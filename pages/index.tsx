@@ -1,7 +1,7 @@
+import { Container, MyCard } from "../styles/pages/index.style";
 import type { GetServerSideProps, NextPage } from "next";
 
 import { Button } from "@mui/material";
-import { Container } from "../styles/pages/index.style";
 import Head from "next/head";
 import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
@@ -22,16 +22,36 @@ const Home: NextPage = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Container>
-        <Link href="/login" passHref>
-          <Button variant="contained" disableElevation color="primary">
-            Login
-          </Button>
-        </Link>
-        <Link href="/signup" passHref>
-          <Button variant="contained" disableElevation color="secondary">
-            Sign up
-          </Button>
-        </Link>
+        <MyCard variant="outlined">
+          <div className="header">
+            <h1>Doto</h1>
+            <span>A todo app project</span>
+          </div>
+          <div className="body">
+            <Link href="/login" passHref>
+              <Button
+                fullWidth
+                size="large"
+                variant="contained"
+                disableElevation
+                color="primary"
+              >
+                Log in
+              </Button>
+            </Link>
+            <Link href="/signup" passHref>
+              <Button
+                fullWidth
+                size="large"
+                variant="outlined"
+                disableElevation
+                color="primary"
+              >
+                Sign up
+              </Button>
+            </Link>
+          </div>
+        </MyCard>
       </Container>
     </>
   );

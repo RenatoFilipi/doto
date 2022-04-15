@@ -1,9 +1,16 @@
-import { Button, IconButton, Snackbar, TextField } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Link as MuiLink,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import { Container, MyCard } from "../styles/pages/login.style";
 import type { GetServerSideProps, NextPage } from "next";
 
 import CloseIcon from "@mui/icons-material/Close";
 import Head from "next/head";
+import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -99,33 +106,49 @@ const Login: NextPage = () => {
       </Head>
       <Container>
         <form onSubmit={(e) => e.preventDefault()}>
-          <MyCard>
-            <TextField
-              fullWidth
-              type="email"
-              id="email"
-              label="Email"
-              variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              fullWidth
-              type="password"
-              id="password"
-              label="Password"
-              variant="outlined"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              color={isSuccess ? "success" : "primary"}
-              disableElevation
-              onClick={SupabaseSignIn}
-            >
-              {isLoading ? "Loading..." : isSuccess ? "Success" : "Login"}
-            </Button>
+          <MyCard variant="outlined">
+            <div className="header">
+              <h1>Log in</h1>
+              <span>See your todos gets done</span>
+            </div>
+            <div className="body">
+              <TextField
+                fullWidth
+                type="email"
+                id="email"
+                label="Email"
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                fullWidth
+                type="password"
+                id="password"
+                label="Password"
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Button
+                fullWidth
+                size="large"
+                variant="contained"
+                color={isSuccess ? "success" : "primary"}
+                disableElevation
+                onClick={SupabaseSignIn}
+              >
+                {isLoading ? "Loading..." : isSuccess ? "Success" : "Log in"}
+              </Button>
+            </div>
+            <div className="footer">
+              <Link href={"/signup"} passHref>
+                <MuiLink>Create account</MuiLink>
+              </Link>
+              <Link href={"/"} passHref>
+                <MuiLink>Go back to landing</MuiLink>
+              </Link>
+            </div>
           </MyCard>
         </form>
         <Snackbar
