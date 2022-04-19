@@ -1,14 +1,12 @@
 import { Container, MyP } from "../styles/pages/app.style";
 import { useEffect, useState } from "react";
 
-import { Button } from "@mui/material";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "../components/layout";
 import type { ReactElement } from "react";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "../utils/supabaseClient";
-import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { user } = await supabase.auth.api.getUserByCookie(req);
@@ -19,22 +17,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 const App = ({ user }: { user: User }) => {
-  const router = useRouter();
-
   const [email, setEmail] = useState<string | undefined>("email not provided!");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     setEmail(user.email);
   }, [user.email]);
-
-  async function SignOut() {
-    setIsLoading(false);
-    const { error } = await supabase.auth.signOut();
-    setIsSuccess(true);
-    router.push("/");
-  }
 
   return (
     <>
@@ -44,14 +31,6 @@ const App = ({ user }: { user: User }) => {
       </Head>
       <Container>
         <MyP>{email}</MyP>
-        <Button
-          variant="contained"
-          disableElevation
-          color={isSuccess ? "success" : "warning"}
-          onClick={SignOut}
-        >
-          {isLoading ? "Loading..." : isSuccess ? "Success" : "Sign out"}
-        </Button>
       </Container>
     </>
   );

@@ -1,3 +1,4 @@
+import { MenuBar } from "./MenuBar";
 import { ReactNode } from "react";
 
 interface AppLayoutProps {
@@ -7,7 +8,7 @@ interface AppLayoutProps {
 export default function Layout({ children }: AppLayoutProps) {
   return (
     <>
-      <h1>LAYOUT</h1>
+      <MenuBar />
       <div>{children}</div>
     </>
   );

@@ -28,6 +28,19 @@ export const MyCard = styled(Card)`
     h1 {
       font: 800 82px Nunito;
       margin: 0;
+      background-color: rgb(63, 70, 251);
+      background-image: radial-gradient(
+        circle,
+        rgba(63, 70, 251, 1) 0%,
+        rgba(255, 101, 101, 1) 100%
+      );
+      background-size: 100%;
+      background-repeat: repeat;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
     }
 
     span {
