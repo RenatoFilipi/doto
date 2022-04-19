@@ -8,6 +8,4 @@ export const MyLogoTypography = styled(Typography)`
   color: white;
 `;
 
-export const MyAppBar = styled(AppBar)`
-  background-color: #101010;
-`;
+export const MyAppBar = styled(AppBar)``;

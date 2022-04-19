@@ -1,6 +1,8 @@
 import { Container, MyP } from "../styles/pages/app.style";
 import { useEffect, useState } from "react";
 
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "../components/layout";
@@ -18,9 +20,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
 const App = ({ user }: { user: User }) => {
   const [email, setEmail] = useState<string | undefined>("email not provided!");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     setEmail(user.email);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, [user.email]);
 
   return (
@@ -29,9 +36,19 @@ const App = ({ user }: { user: User }) => {
         <title>doto | app</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Container>
-        <MyP>{email}</MyP>
-      </Container>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      {isLoading ? (
+        <Container></Container>
+      ) : (
+        <Container>
+          <MyP>{email}</MyP>
+        </Container>
+      )}
     </>
   );
 };
