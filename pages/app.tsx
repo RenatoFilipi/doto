@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
+import Layout from "../components/layout";
+import type { ReactElement } from "react";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
@@ -51,6 +53,14 @@ const App = ({ user }: { user: User }) => {
           {isLoading ? "Loading..." : isSuccess ? "Success" : "Sign out"}
         </Button>
       </Container>
+    </>
+  );
+};
+
+App.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <>
+      <Layout>{page}</Layout>
     </>
   );
 };

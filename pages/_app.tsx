@@ -1,11 +1,21 @@
 import "../styles/globals.css";
 
 import { AuthChangeEvent, Session } from "@supabase/supabase-js";
+import type { ReactElement, ReactNode } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import type { AppProps } from "next/app";
+import type { NextPage } from "next";
 import { supabase } from "../utils/supabaseClient";
 import { useEffect } from "react";
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 const theme = createTheme({
   typography: {
@@ -17,7 +27,9 @@ const theme = createTheme({
   },
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -42,7 +54,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     });
   }
 
-  return (
+  return getLayout(
     <ThemeProvider theme={theme}>
       <Component {...pageProps} />
     </ThemeProvider>
