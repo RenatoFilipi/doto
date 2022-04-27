@@ -27,7 +27,7 @@ const App = ({ user }: { user: User }) => {
     setEmail(user.email);
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 300);
   }, [user.email]);
 
   return (

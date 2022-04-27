@@ -2,6 +2,7 @@ import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import { MouseEvent, ReactNode, useState } from "react";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Box from "@mui/material/Box";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -9,12 +10,13 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import Link from "next/link";
 import List from "@mui/material/List";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -159,6 +161,7 @@ export default function Nav({ children }: AppLayoutProps) {
               <AccountCircle />
             </IconButton>
             <Menu
+              style={{ marginTop: "2rem" }}
               id="menu-appbar"
               anchorEl={anchorEl}
               anchorOrigin={{
@@ -173,8 +176,13 @@ export default function Nav({ children }: AppLayoutProps) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={SignOut}>Logout</MenuItem>
+              <MenuItem
+                onClick={SignOut}
+                disableRipple
+                style={{ display: "flex", gap: ".5rem" }}
+              >
+                <LogoutOutlinedIcon /> Logout
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>
@@ -191,9 +199,8 @@ export default function Nav({ children }: AppLayoutProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          <Link href={"/app"} passHref>
             <ListItemButton
-              key={text}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? "initial" : "center",
@@ -207,17 +214,16 @@ export default function Nav({ children }: AppLayoutProps) {
                   justifyContent: "center",
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <ListAltOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary={"List"} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
-          ))}
+          </Link>
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
+          <Link href={"/profile"} passHref>
             <ListItemButton
-              key={text}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? "initial" : "center",
@@ -231,11 +237,14 @@ export default function Nav({ children }: AppLayoutProps) {
                   justifyContent: "center",
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <AccountBoxOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText
+                primary={"Profile"}
+                sx={{ opacity: open ? 1 : 0 }}
+              />
             </ListItemButton>
-          ))}
+          </Link>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
